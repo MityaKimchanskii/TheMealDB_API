@@ -11,6 +11,11 @@
 		3B0A4B1E29E115BA00779F07 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A4B1D29E115BA00779F07 /* ViewController.swift */; };
 		3B0A4B2329E115BC00779F07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B0A4B2229E115BC00779F07 /* Assets.xcassets */; };
 		3B0A4B2629E115BC00779F07 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B0A4B2429E115BC00779F07 /* LaunchScreen.storyboard */; };
+		3B0A4B3029E11A0F00779F07 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A4B2F29E11A0F00779F07 /* LoginViewController.swift */; };
+		3B0A4B3229E11AC600779F07 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A4B3129E11AC600779F07 /* LoginView.swift */; };
+		3B0A4B3629E1251700779F07 /* MealListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A4B3529E1251700779F07 /* MealListViewController.swift */; };
+		3B0A4B3929E12B0B00779F07 /* MealListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A4B3829E12B0B00779F07 /* MealListCell.swift */; };
+		3B0A4B3B29E1343C00779F07 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A4B3A29E1343C00779F07 /* DetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +25,11 @@
 		3B0A4B2229E115BC00779F07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B0A4B2529E115BC00779F07 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B0A4B2729E115BC00779F07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B0A4B2F29E11A0F00779F07 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		3B0A4B3129E11AC600779F07 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		3B0A4B3529E1251700779F07 /* MealListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListViewController.swift; sourceTree = "<group>"; };
+		3B0A4B3829E12B0B00779F07 /* MealListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListCell.swift; sourceTree = "<group>"; };
+		3B0A4B3A29E1343C00779F07 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +64,9 @@
 			children = (
 				3B0A4B1929E115BA00779F07 /* AppDelegate.swift */,
 				3B0A4B1D29E115BA00779F07 /* ViewController.swift */,
+				3B0A4B2E29E119A600779F07 /* Login */,
+				3B0A4B3429E124D100779F07 /* MealList */,
+				3B0A4B3329E121AD00779F07 /* Utils */,
 				3B0A4B2D29E1161C00779F07 /* Files */,
 			);
 			path = TheMealDB_API;
@@ -67,6 +80,40 @@
 				3B0A4B2729E115BC00779F07 /* Info.plist */,
 			);
 			name = Files;
+			sourceTree = "<group>";
+		};
+		3B0A4B2E29E119A600779F07 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				3B0A4B2F29E11A0F00779F07 /* LoginViewController.swift */,
+				3B0A4B3129E11AC600779F07 /* LoginView.swift */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		3B0A4B3329E121AD00779F07 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		3B0A4B3429E124D100779F07 /* MealList */ = {
+			isa = PBXGroup;
+			children = (
+				3B0A4B3529E1251700779F07 /* MealListViewController.swift */,
+				3B0A4B3729E12AE700779F07 /* Cells */,
+				3B0A4B3A29E1343C00779F07 /* DetailsViewController.swift */,
+			);
+			name = MealList;
+			sourceTree = "<group>";
+		};
+		3B0A4B3729E12AE700779F07 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3B0A4B3829E12B0B00779F07 /* MealListCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,7 +186,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B0A4B3029E11A0F00779F07 /* LoginViewController.swift in Sources */,
+				3B0A4B3629E1251700779F07 /* MealListViewController.swift in Sources */,
 				3B0A4B1E29E115BA00779F07 /* ViewController.swift in Sources */,
+				3B0A4B3229E11AC600779F07 /* LoginView.swift in Sources */,
+				3B0A4B3B29E1343C00779F07 /* DetailsViewController.swift in Sources */,
+				3B0A4B3929E12B0B00779F07 /* MealListCell.swift in Sources */,
 				3B0A4B1A29E115BA00779F07 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,11 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.backgroundColor = .red
-        window?.rootViewController = ViewController()
+        window?.backgroundColor = .systemBackground
+//        window?.rootViewController = ViewController()
+//        window?.rootViewController = LoginViewController()
+//        window?.rootViewController = MealListViewController()
+        
+        let mealvc = MealListViewController()
+        let navigationVC = UINavigationController(rootViewController: mealvc)
+        
+        window?.rootViewController = navigationVC
         
         return true
     }
-
 }
 
