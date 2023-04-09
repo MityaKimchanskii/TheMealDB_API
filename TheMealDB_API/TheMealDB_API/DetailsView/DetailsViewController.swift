@@ -9,34 +9,37 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     
-    var meal: Meal? {
-        didSet {
-            updateView()
-        }
-    }
+    var meal: Meal?
+    var ingredients: [String] = []
+    var measures: [String] = []
     
     let mealImageView = UIImageView()
+    let scrollView = UIScrollView()
     let stackView = UIStackView()
     let nameLabel = UILabel()
     let instructionsLabel = UILabel()
-   
+    let instructionsDetailsLabel = UILabel()
+    let componentsLabel = UILabel()
+    let compositionStackView = UIStackView()
+    let ingredientsStackView = UIStackView()
+    let measuresStackView = UIStackView()
     
     let heightAndWidthImage: CGFloat = 200
+    var imageViewTopConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupScrollView()
         style()
         fetchImage()
         fetchDetails()
         layout()
     }
-    
-    private func updateView() {
-        
-        nameLabel.text = meal?.mealName
-    }
-    
+}
+
+// MARK: - Methods
+extension DetailsViewController {
     private func fetchImage() {
         guard let meal else { return }
         MealManager.fetchImage(meal: meal) { [weak self] result in
@@ -51,12 +54,30 @@ class DetailsViewController: UIViewController {
         }
     }
     
+    private func setupScrollView() {
+        scrollView.delegate = self
+    }
+    
     private func fetchDetails() {
         guard let mealID = meal?.mealID else { return }
         MealManager.fetchMealDetails(with: mealID) { [weak self] result in
             switch result {
-            case .success(let details):
-                self?.instructionsLabel.text = details.instructions
+            case .success(var details):
+                self?.instructionsDetailsLabel.text = details.instructions
+                
+                let ingrArray = details.ingredients
+                for i in ingrArray {
+                    if i != "" && i != " " && i != nil {
+                        self?.ingredients.append("👉\(i ?? "")")
+                    }
+                }
+                
+                let measArray = details.measures
+                for i in measArray {
+                    self?.measures.append("🥄\(i ?? "")")
+                }
+                self?.checkComponents()
+                self?.components()
             case .failure(let error):
                 print(error)
                 print(error.localizedDescription)
@@ -64,20 +85,46 @@ class DetailsViewController: UIViewController {
         }
     }
     
+    private func checkComponents() {
+        let countIngr = ingredients.count
+        let countMeas = measures.count
+        let range = countIngr...countMeas
+        var newArray = [String]()
+        for (i, _) in ingredients.enumerated() {
+            newArray.append(measures[i])
+        }
+        measures = newArray
+    }
+    
+    private func components() {
+        var countIngr = 0
+        for text in ingredients {
+            ingredientsStackView.addArrangedSubview(makeLabel(name: text))
+            countIngr += 1
+        }
+        
+        var countMeas = 0
+        for text in measures {
+            measuresStackView.addArrangedSubview(makeLabel(name: text))
+            countMeas += 1
+        }
+    }
+    
     private func style() {
         view.backgroundColor = .white
         
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 8
-//        stackView.distribution = .fill
-        stackView.alignment = .center
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         mealImageView.translatesAutoresizingMaskIntoConstraints = false
         mealImageView.contentMode = .scaleAspectFit
         mealImageView.layer.cornerRadius = heightAndWidthImage/2
         mealImageView.clipsToBounds = true
         mealImageView.backgroundColor = .red
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.alignment = .fill
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.systemFont(ofSize: 25, weight: .bold)
@@ -86,29 +133,88 @@ class DetailsViewController: UIViewController {
         nameLabel.textAlignment = .center
         
         instructionsLabel.translatesAutoresizingMaskIntoConstraints = false
-        instructionsLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        instructionsLabel.lineBreakMode = .byClipping
-        instructionsLabel.numberOfLines = 0
-        instructionsLabel.textAlignment = .justified
+        instructionsLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        instructionsLabel.text = "🔵 Instructions🧑‍🍳"
+        
+        instructionsDetailsLabel.translatesAutoresizingMaskIntoConstraints = false
+        instructionsDetailsLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        instructionsDetailsLabel.lineBreakMode = .byClipping
+        instructionsDetailsLabel.numberOfLines = 0
+        instructionsDetailsLabel.textAlignment = .justified
+        
+        componentsLabel.translatesAutoresizingMaskIntoConstraints = false
+        componentsLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        componentsLabel.text = "🔵 Ingredients🥣"
+        
+        compositionStackView.translatesAutoresizingMaskIntoConstraints = false
+        compositionStackView.axis = .horizontal
+        compositionStackView.spacing = 8
+        compositionStackView.alignment = .top
+        compositionStackView.distribution = .fillEqually
+        
+        ingredientsStackView.translatesAutoresizingMaskIntoConstraints = false
+        ingredientsStackView.axis = .vertical
+        ingredientsStackView.spacing = 8
+        
+        measuresStackView.translatesAutoresizingMaskIntoConstraints = false
+        measuresStackView.axis = .vertical
+        measuresStackView.spacing = 8
     }
     
     private func layout() {
         view.addSubview(mealImageView)
-        view.addSubview(stackView)
-        
+        view.addSubview(scrollView)
+        scrollView.addSubview(stackView)
+    
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(instructionsLabel)
+        stackView.addArrangedSubview(instructionsDetailsLabel)
+        stackView.addArrangedSubview(componentsLabel)
+        stackView.addArrangedSubview(compositionStackView)
+        
+        compositionStackView.addArrangedSubview(ingredientsStackView)
+        compositionStackView.addArrangedSubview(measuresStackView)
+    
+        imageViewTopConstraint = mealImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         
         NSLayoutConstraint.activate([
-            mealImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            imageViewTopConstraint!,
             mealImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             mealImageView.heightAnchor.constraint(equalToConstant: heightAndWidthImage),
             mealImageView.widthAnchor.constraint(equalToConstant: heightAndWidthImage),
             
-            stackView.topAnchor.constraint(equalToSystemSpacingBelow: mealImageView.bottomAnchor, multiplier: 1),
-            stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 2),
+            scrollView.topAnchor.constraint(equalToSystemSpacingBelow: mealImageView.bottomAnchor, multiplier: 1),
+            scrollView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: scrollView.trailingAnchor, multiplier: 2),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
+    }
+}
+
+// MARK: - Animation
+extension DetailsViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let y = scrollView.contentOffset.y
+        
+        let swipingDown = y <= 0
+        let shouldSnap = y > 200
+        
+        let labelHeight = mealImageView.frame.height
+        
+        UIView.animate(withDuration: 0.3) {
+            self.mealImageView.alpha = swipingDown ? 1.0 : 0.0
+        }
+        
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0) {
+            self.imageViewTopConstraint?.constant = shouldSnap ? -labelHeight : 0
+            self.view.layoutIfNeeded()
+        }
     }
 }

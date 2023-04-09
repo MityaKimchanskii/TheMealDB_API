@@ -157,9 +157,8 @@ class MealManager {
         components?.queryItems = [mealQuery]
         
         guard let finalURL = components?.url else { return completion(.failure(.invalidURL)) }
-        
+        print(finalURL)
         URLSession.shared.dataTask(with: finalURL) { data, _, error in
-            
             
             DispatchQueue.main.async {
                 if let error = error {
