@@ -145,6 +145,7 @@ extension CategoryListViewController: UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: MealListCell.reuseID, for: indexPath) as! MealListCell
         let meal = meals[indexPath.row]
         cell.meal = meal
+       
         return cell
     }
     
@@ -153,9 +154,9 @@ extension CategoryListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let text = arr[indexPath.row]
+        let meal = meals[indexPath.row]
         let detailsVC = DetailsViewController()
-        detailsVC.nameLabel.text = text
+        detailsVC.meal = meal
         
         self.navigationController?.pushViewController(detailsVC, animated: true)
     }

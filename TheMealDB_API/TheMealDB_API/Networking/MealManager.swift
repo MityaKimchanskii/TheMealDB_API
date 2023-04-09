@@ -8,6 +8,7 @@
 import UIKit
 
 enum NetworkError: LocalizedError {
+    
     case invalidURL
     case thrownError(Error)
     case noData
@@ -28,6 +29,7 @@ enum NetworkError: LocalizedError {
 }
 
 class MealManager {
+    
     static let baseURL = URL(string: "https://www.themealdb.com")
     static let apiComponent = "api"
     static let jsonComponent = "json"
@@ -35,10 +37,11 @@ class MealManager {
     static let oneComponent = "1"
     static let listComponent = "list.php"
     static let filterComponent = "filter.php"
+    static let lookupComponent = "lookup.php"
     
     static let cKey = "c"
     static let cValue = "list"
-    
+    static let mealKey = "i"
     
     // Fetch all categories:
     static func fetchCategories(completion: @escaping (Result<[Category], NetworkError>) -> Void) {
@@ -135,6 +138,43 @@ class MealManager {
                 guard let image = UIImage(data: data) else { return completion(.failure(.unableToDecode)) }
                 
                 return completion(.success(image))
+            }
+        }.resume()
+    }
+    
+    // Fetch meal details with mealID
+    static func fetchMealDetails(with id: String, completion: @escaping (Result<Details, NetworkError>) -> Void) {
+        
+        guard let baseURL else { return completion(.failure(.invalidURL)) }
+        let apiURL = baseURL.appending(path: apiComponent)
+        let jsonURL = apiURL.appending(path: jsonComponent)
+        let v1URL = jsonURL.appending(path: v1Component)
+        let oneURL = v1URL.appending(path: oneComponent)
+        let lookupURL = oneURL.appending(path: lookupComponent)
+        
+        var components = URLComponents(url: lookupURL, resolvingAgainstBaseURL: true)
+        let mealQuery = URLQueryItem(name: mealKey, value: id)
+        components?.queryItems = [mealQuery]
+        
+        guard let finalURL = components?.url else { return completion(.failure(.invalidURL)) }
+        
+        URLSession.shared.dataTask(with: finalURL) { data, _, error in
+            
+            
+            DispatchQueue.main.async {
+                if let error = error {
+                    return completion(.failure(.thrownError(error)))
+                }
+                
+                guard let data = data else { return completion(.failure(.noData)) }
+                
+                do {
+                    let mealDetails = try JSONDecoder().decode(MealDetais.self, from: data)
+                    let details = mealDetails.meals[0]
+                    return completion(.success(details))
+                } catch {
+                    return completion(.failure(.unableToDecode))
+                }
             }
         }.resume()
     }

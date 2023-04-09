@@ -33,20 +33,16 @@ class MealListCell: UITableViewCell {
     
     private func updateView() {
         guard let meal else { return }
-        MealManager.fetchImage(meal: meal) { result in
+        MealManager.fetchImage(meal: meal) { [weak self] result in
             switch result {
             case .success(let image):
-                self.nameLabel.text = meal.mealName
-                self.mealImageView.image = image
+                self?.nameLabel.text = meal.mealName
+                self?.mealImageView.image = image
             case .failure(let error):
                 print(error)
                 print(error.localizedDescription)
             }
         }
-    }
-    
-    private func fetchImage() {
-        
     }
     
     private func setup() {

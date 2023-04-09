@@ -36,11 +36,11 @@ struct Meal: Decodable {
     }
 }
 
-struct MealData: Decodable {
-    let meals: [Data]
+struct MealDetais: Decodable {
+    let meals: [Details]
 }
 
-struct Data: Decodable {
+struct Details: Decodable {
     let mealID: String
     let mealName: String
     let instructions: String
