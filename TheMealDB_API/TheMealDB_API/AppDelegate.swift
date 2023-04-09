@@ -21,9 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        window?.rootViewController = LoginViewController()
 //        window?.rootViewController = MealListViewController()
         
-        let mealvc = MealListViewController()
-        let navigationVC = UINavigationController(rootViewController: mealvc)
+//        let mealvc = MealListViewController()
+//        let navigationVC = UINavigationController(rootViewController: mealvc)
+//
+//        window?.rootViewController = navigationVC
         
+//        window?.rootViewController = CategoryListViewController()
+        
+        let categoryVC = CategoryListViewController()
+        let navigationVC = UINavigationController(rootViewController: categoryVC)
         window?.rootViewController = navigationVC
         
         return true

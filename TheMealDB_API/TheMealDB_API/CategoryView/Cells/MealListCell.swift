@@ -15,6 +15,12 @@ class MealListCell: UITableViewCell {
     static let reuseID = "mealCell"
     static let cellHeight: CGFloat = 116
     
+    var meal: Meal? {
+        didSet {
+            updateView()
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
@@ -25,13 +31,32 @@ class MealListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func updateView() {
+        guard let meal else { return }
+        MealManager.fetchImage(meal: meal) { result in
+            switch result {
+            case .success(let image):
+                self.nameLabel.text = meal.mealName
+                self.mealImageView.image = image
+            case .failure(let error):
+                print(error)
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func fetchImage() {
+        
+    }
+    
     private func setup() {
         mealImageView.translatesAutoresizingMaskIntoConstraints = false
         mealImageView.contentMode = .scaleAspectFit
-        mealImageView.image = UIImage(systemName: "star.fill")
+        mealImageView.layer.cornerRadius = 50
+        mealImageView.clipsToBounds = true
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        nameLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         nameLabel.numberOfLines = 0
         nameLabel.lineBreakMode = .byWordWrapping
         nameLabel.adjustsFontSizeToFitWidth = true
@@ -48,6 +73,7 @@ class MealListCell: UITableViewCell {
             mealImageView.widthAnchor.constraint(equalToConstant: 100),
             
             nameLabel.centerYAnchor.constraint(equalTo: mealImageView.centerYAnchor),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: nameLabel.trailingAnchor, multiplier: 1),
             nameLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: mealImageView.trailingAnchor, multiplier: 2)
         ])
     }
