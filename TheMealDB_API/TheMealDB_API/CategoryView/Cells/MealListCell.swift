@@ -11,6 +11,7 @@ class MealListCell: UITableViewCell {
     
     let mealImageView = UIImageView()
     let nameLabel = UILabel()
+    let arrowImageView = UIImageView()
     
     static let reuseID = "mealCell"
     static let cellHeight: CGFloat = 116
@@ -29,6 +30,10 @@ class MealListCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func didMoveToSuperview() {
+        selectionStyle = .none
     }
     
     private func updateView() {
@@ -52,15 +57,22 @@ class MealListCell: UITableViewCell {
         mealImageView.clipsToBounds = true
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        nameLabel.font = UIFont.systemFont(ofSize: 19, weight: .medium)
         nameLabel.numberOfLines = 0
         nameLabel.lineBreakMode = .byWordWrapping
         nameLabel.adjustsFontSizeToFitWidth = true
+        
+        arrowImageView.translatesAutoresizingMaskIntoConstraints = false
+        arrowImageView.image = UIImage(systemName: "chevron.right")
+        arrowImageView.clipsToBounds = true
+        arrowImageView.tintColor = .systemPink
+        arrowImageView.contentMode = .scaleAspectFit
     }
     
     private func layout() {
         addSubview(mealImageView)
         addSubview(nameLabel)
+        addSubview(arrowImageView)
         
         NSLayoutConstraint.activate([
             mealImageView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
@@ -69,8 +81,14 @@ class MealListCell: UITableViewCell {
             mealImageView.widthAnchor.constraint(equalToConstant: 100),
             
             nameLabel.centerYAnchor.constraint(equalTo: mealImageView.centerYAnchor),
-            trailingAnchor.constraint(equalToSystemSpacingAfter: nameLabel.trailingAnchor, multiplier: 1),
-            nameLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: mealImageView.trailingAnchor, multiplier: 2)
+            trailingAnchor.constraint(equalToSystemSpacingAfter: nameLabel.trailingAnchor, multiplier: 5),
+            nameLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: mealImageView.trailingAnchor, multiplier: 2),
+            
+            arrowImageView.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: arrowImageView.trailingAnchor, multiplier: 0),
+            arrowImageView.heightAnchor.constraint(equalToConstant: 30),
+            arrowImageView.widthAnchor.constraint(equalToConstant: 20)
+            
         ])
     }
 }
