@@ -19,7 +19,6 @@ struct Category: Codable {
     }
 }
 
-
 struct MealsObject: Decodable {
     let meals: [Meal]
 }
@@ -137,7 +136,7 @@ struct Details: Decodable {
         ingredient11, ingredient12, ingredient13, ingredient14, ingredient15,
         ingredient15, ingredient17, ingredient18, ingredient19, ingredient20
     ]
-    
+
     lazy var measures = [
         measure1, measure2, measure3, measure4, measure5,
         measure6, measure7, measure8, measure9, measure10,

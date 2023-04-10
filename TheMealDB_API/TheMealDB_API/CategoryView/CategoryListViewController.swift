@@ -37,11 +37,12 @@ class CategoryListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchCategories()
-        style()
-        layout()
-        activateAnimation()
+        setup()
     }
+}
+
+// MARK: - Methods
+extension CategoryListViewController {
     
     private func style() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -114,6 +115,13 @@ class CategoryListViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    private func setup() {
+        fetchCategories()
+        style()
+        layout()
+        activateAnimation()
     }
 }
 

@@ -35,6 +35,10 @@ class MealListCell: UITableViewCell {
     override func didMoveToSuperview() {
         selectionStyle = .none
     }
+}
+
+// MARK: - Methods
+extension MealListCell {
     
     private func updateView() {
         guard let meal else { return }

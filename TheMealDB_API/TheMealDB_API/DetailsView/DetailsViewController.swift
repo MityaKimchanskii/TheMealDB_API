@@ -35,17 +35,13 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        printButtonAction()
-        setupScrollView()
-        style()
-        fetchImage()
-        fetchDetails()
-        layout()
+        setup()
     }
 }
 
 // MARK: - Methods
 extension DetailsViewController {
+    
     private func fetchImage() {
         guard let meal else { return }
         MealManager.fetchImage(meal: meal) { [weak self] result in
@@ -165,7 +161,6 @@ extension DetailsViewController {
         
         printButton.translatesAutoresizingMaskIntoConstraints = false
         printButton.setTitle("🖨️", for: .normal)
-//        printButton.setImage(UIImage(systemName: "printer.fill"), for: .normal)
         printButton.titleLabel?.minimumScaleFactor = 0.5
         printButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
         printButton.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -229,6 +224,15 @@ extension DetailsViewController {
         print.printInfo = info
         print.printingItem = view.snapshot(scrollView: scrollView)
         print.present(animated: true)
+    }
+    
+    private func setup() {
+        printButtonAction()
+        setupScrollView()
+        style()
+        fetchImage()
+        fetchDetails()
+        layout()
     }
 }
 
