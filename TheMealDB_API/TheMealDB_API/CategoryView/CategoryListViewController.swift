@@ -13,8 +13,6 @@ class CategoryListViewController: UIViewController {
     private var categories: [Category] = []
     private var meals: [Meal] = []
     
-    let arr = ["Swift", "JavaScript", "SwiftUI", "Python", "Objective-C", "HTML", "CSS"]
-    
     let titleLabel = UILabel()
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -35,11 +33,14 @@ class CategoryListViewController: UIViewController {
     
     let tableView = UITableView()
     
+    let animationImageView = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchCategories()
         style()
         layout()
+        activateAnimation()
     }
     
     private func style() {
@@ -53,12 +54,19 @@ class CategoryListViewController: UIViewController {
         tableView.register(MealListCell.self, forCellReuseIdentifier: MealListCell.reuseID)
         tableView.delegate = self
         tableView.dataSource = self
+        
+        animationImageView.translatesAutoresizingMaskIntoConstraints = false
+        animationImageView.image = UIImage(systemName: "fork.knife.circle.fill")
+        animationImageView.tintColor = .systemPink
+        animationImageView.contentMode = .scaleAspectFit
+        animationImageView.alpha = 0.8
     }
     
     private func layout() {
         view.addSubview(titleLabel)
         view.addSubview(collectionView)
         view.addSubview(tableView)
+        view.addSubview(animationImageView)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 0),
@@ -69,6 +77,11 @@ class CategoryListViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: collectionView.trailingAnchor, multiplier: 1),
             collectionView.heightAnchor.constraint(equalToConstant: 50),
+            
+            view.leadingAnchor.constraint(equalToSystemSpacingAfter: animationImageView.leadingAnchor, multiplier: 8),
+            animationImageView.heightAnchor.constraint(equalToConstant: 50),
+            animationImageView.widthAnchor.constraint(equalToConstant: 50),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: animationImageView.bottomAnchor, multiplier: 0),
             
             tableView.topAnchor.constraint(equalToSystemSpacingBelow: collectionView.bottomAnchor, multiplier: 2),
             tableView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
@@ -159,6 +172,32 @@ extension CategoryListViewController: UITableViewDataSource, UITableViewDelegate
         detailsVC.meal = meal
         
         self.navigationController?.pushViewController(detailsVC, animated: true)
+    }
+}
+
+// MARK: - Animation
+extension CategoryListViewController {
+   
+    private func boundsKeyFrameAnimation() -> CAKeyframeAnimation {
+        let bounce = CAKeyframeAnimation(keyPath: AnimationHelper.position)
+        bounce.duration = 3.5
+        bounce.repeatCount = 1
+        bounce.values = [
+            NSValue(cgPoint: CGPoint(x: 25, y: AnimationHelper.screenBounds.height - 100)),
+            NSValue(cgPoint: CGPoint(x: 75, y: AnimationHelper.screenBounds.height - 150)),
+            NSValue(cgPoint: CGPoint(x: 125, y: AnimationHelper.screenBounds.height - 100)),
+            NSValue(cgPoint: CGPoint(x: 225, y: AnimationHelper.screenBounds.height - 150)),
+            NSValue(cgPoint: CGPoint(x: 325, y: AnimationHelper.screenBounds.height - 100)),
+            NSValue(cgPoint: CGPoint(x: AnimationHelper.screenBounds.width + 200, y: AnimationHelper.screenBounds.height - 250))
+        ]
+        
+        bounce.keyTimes =  [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+        
+        return bounce
+    }
+    
+    private func activateAnimation() {
+        animationImageView.layer.add(boundsKeyFrameAnimation(), forKey: "bounce")
     }
 }
 

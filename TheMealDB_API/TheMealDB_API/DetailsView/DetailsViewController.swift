@@ -238,7 +238,7 @@ extension DetailsViewController: UIScrollViewDelegate {
         let y = scrollView.contentOffset.y
         
         let swipingDown = y <= 0
-        let shouldSnap = y > 200
+        let shouldSnap = y > 150
         
         let labelHeight = mealImageView.frame.height
         

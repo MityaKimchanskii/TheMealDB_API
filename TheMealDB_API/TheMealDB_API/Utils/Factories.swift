@@ -35,3 +35,12 @@ extension UIView {
         return image
     }
 }
+
+class AnimationHelper {
+
+    static var position = "position"
+
+    static var screenBounds: CGRect {
+        return UIScreen.main.bounds
+    }
+}
