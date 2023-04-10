@@ -17,10 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chef" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9Yh-jS-0X5">
-                                <rect key="frame" x="121.66666666666669" y="387.33333333333331" width="150" height="77.333333333333314"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="WUm-1x-t8f"/>
-                                </constraints>
+                                <rect key="frame" x="130.33333333333337" y="387.33333333333331" width="132.66666666666663" height="77.333333333333314"/>
                                 <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="65"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
